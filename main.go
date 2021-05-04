@@ -1,17 +1,17 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
-	"sync"
+	"bytes"
 	"database/sql"
 	"encoding/json"
-	"bytes"
+	"fmt"
+	"log"
+	"net/http"
 	"os"
 	"strings"
+	"sync"
 
-    "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
 
@@ -68,25 +68,25 @@ func NewServer() *Server {
 
 //run in goroutine - handle requests
 func (s *Server) handleRequests() {
-    // creates a new instance of a mux router
-    myRouter := mux.NewRouter().StrictSlash(true)
+	// creates a new instance of a mux router
+	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.PathPrefix("/").
 		HandlerFunc(s.getHandler).
 		Methods("GET")
 	myRouter.PathPrefix("/").
 		HandlerFunc(s.postHandler).
 		Methods("POST")
-    // finally, instead of passing in nil, we want
-    // to pass in our newly created router as the second
-    // argument
-    log.Fatal(http.ListenAndServe(":8080", myRouter))
+	// finally, instead of passing in nil, we want
+	// to pass in our newly created router as the second
+	// argument
+	log.Fatal(http.ListenAndServe(":8080", myRouter))
 	s.wg.Done()
 }
 
 func main() {
 	server := NewServer()
-    fmt.Println("Rest API v2.0 - Mux Routers")
-    go server.handleRequests()
+	fmt.Println("Rest API v2.0 - Mux Routers")
+	go server.handleRequests()
 	server.wg.Add(1)
 
 	go server.connectDb()
@@ -120,7 +120,6 @@ func (s *Server) getHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("getHandler request - %+v\n", r)
 	fmt.Printf("getHandler path - %v\n", r.URL)
-
 
 	if err != nil {
 		fmt.Fprintf(w, "Error querying postgre, err: %v\n", err)
