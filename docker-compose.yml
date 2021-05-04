@@ -1,0 +1,28 @@
+version: "3.9"
+
+networks:
+  default-network:
+
+services:
+  go-redirector:
+    build: .
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: default
+      POSTGRES_DB : postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - default-network
+
+  postgres:
+    build: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: default
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - default-network

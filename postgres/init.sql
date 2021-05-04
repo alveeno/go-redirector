@@ -1,0 +1,4 @@
+CREATE TABLE redirects (
+    key VARCHAR (25) UNIQUE NOT NULL,
+    url VARCHAR (100) NOT NULL
+);
